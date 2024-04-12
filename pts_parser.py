@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import os
 
 directory_path = 'points_22'
@@ -49,3 +50,23 @@ print(all_points_data)
 
 # Write the DataFrame to a CSV file
 all_points_data.to_csv('all_points_data.csv', index=False)
+
+
+# features' positioning
+features = [
+    ["Eye length ratio", [8, 13]],
+    ["Eye distance ratio", [8, 13]],  # Eye distance ratio: distance between center of two eyes over distance between points 8 and 13, calculate the centers of the eyes first
+    ["Nose ratio", [15, 16, 20, 21]],
+    ["Lip size ratio", [2, 3, 17, 18]],
+    ["Lip length ratio", [2, 3, 20, 21]],
+    ["Eye-brow length ratio", [4, 5, 6, 7, 8, 13]],  # We include both sets of points for eyebrows
+    ["Aggressive ratio", [10, 19, 20, 21]]
+]
+
+
+# Euclidean distance between two points in the dataframe
+def euclidean_distance(df, idx1, idx2):
+    point1 = df.iloc[idx1-1]
+    point2 = df.iloc[idx2-1]
+    return np.sqrt((point2['x'] - point1['x']) ** 2 + (point2['y'] - point1['y']) ** 2)
+
