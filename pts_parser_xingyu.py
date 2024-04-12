@@ -53,39 +53,29 @@ def euclidean_distance(point1, point2):
 
 
 def calculate_features(points):
-    features = {}
-    # Eye length ratio
-    eye_length = max(euclidean_distance(points[4], points[5]), euclidean_distance(points[6], points[7]))
+    # Calculate distances needed for feature ratios
+    eye_length_1 = euclidean_distance(points[9], points[10])
+    eye_length_2 = euclidean_distance(points[11], points[12])
     distance_8_13 = euclidean_distance(points[8], points[13])
-    features['Eye length ratio'] = eye_length / distance_8_13
-
-    # Eye distance ratio
     eye_center_1 = ((points[4][0] + points[5][0]) / 2, (points[4][1] + points[5][1]) / 2)
     eye_center_2 = ((points[6][0] + points[7][0]) / 2, (points[6][1] + points[7][1]) / 2)
     eye_distance = euclidean_distance(eye_center_1, eye_center_2)
-    features['Eye distance ratio'] = eye_distance / distance_8_13
-
-    # Nose ratio
     nose_dist = euclidean_distance(points[15], points[16])
     base_nose_dist = euclidean_distance(points[20], points[21])
-    features['Nose ratio'] = nose_dist / base_nose_dist
-
-    # Lip size ratio
     lip_dist = euclidean_distance(points[2], points[3])
     base_lip_dist = euclidean_distance(points[17], points[18])
-    features['Lip size ratio'] = lip_dist / base_lip_dist
-
-    # Lip length ratio
-    base_lip_length = euclidean_distance(points[20], points[21])
-    features['Lip length ratio'] = lip_dist / base_lip_length
-
-    # Eye-brow length ratio
-    eyebrow_length = max(euclidean_distance(points[4], points[5]), euclidean_distance(points[6], points[7]))
-    features['Eye-brow length ratio'] = eyebrow_length / distance_8_13
-
-    # Aggressive ratio
     aggression_dist = euclidean_distance(points[10], points[19])
-    features['Aggressive ratio'] = aggression_dist / base_nose_dist
+
+    # Construct the list of feature ratios
+    features = [
+        max(eye_length_1, eye_length_2) / distance_8_13,  # Eye length ratio
+        eye_distance / distance_8_13,  # Eye distance ratio
+        nose_dist / base_nose_dist,  # Nose ratio
+        lip_dist / base_lip_dist,  # Lip size ratio
+        lip_dist / base_nose_dist,  # Lip length ratio
+        max(eye_length_1, eye_length_2) / distance_8_13,  # Eye-brow length ratio
+        aggression_dist / base_nose_dist  # Aggressive ratio
+    ]
 
     return features
 
