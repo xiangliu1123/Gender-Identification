@@ -4,7 +4,7 @@ import os
 directory_path = 'points_22'
 
 # Adjust the folder names to match the actual range provided
-male_folders = [f'm-{i:03d}' for i in range(1, 76)]
+male_folders = [f'm-{i:03d}' for i in range(1, 77)]
 female_folders = [f'w-{i:03d}' for i in range(1, 61)]
 target_folders = male_folders + female_folders
 
