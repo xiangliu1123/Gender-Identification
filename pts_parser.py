@@ -4,8 +4,8 @@ import os
 
 directory_path = 'points_22'
 
-# Generate folder names
-male_folders = [f'm-{i:03d}' for i in range(1, 76)]
+# Adjust the folder names to match the actual range provided
+male_folders = [f'm-{i:03d}' for i in range(1, 77)]
 female_folders = [f'w-{i:03d}' for i in range(1, 61)]
 target_folders = male_folders + female_folders
 
@@ -17,18 +17,12 @@ def read_pts(file_path):
     start = lines.index('{\n') + 1
     end = lines.index('}\n', start)
 
-    # Extract points
-    points = []
-    for line in lines[start:end]:
-        x, y = map(float, line.strip().split())
-        points.append((x, y))
+    # Extract points and convert to list of tuples
+    points = [tuple(map(float, line.strip().split())) for line in lines[start:end]]
+    return points
 
-    # Convert to DataFrame
-    points_df = pd.DataFrame(points, columns=['X', 'Y'])
-    return points_df
-
-# Initialize an empty DataFrame to accumulate all points
-all_points_data = pd.DataFrame()
+# Initialize an empty list to accumulate all points data
+all_points_data = []
 
 for root, dirs, files in os.walk(directory_path):
     current_folder = os.path.basename(root)
@@ -36,21 +30,22 @@ for root, dirs, files in os.walk(directory_path):
         for filename in files:
             if filename.endswith('.pts'):
                 file_path = os.path.join(root, filename)
-                points_data = read_pts(file_path)
+                points = read_pts(file_path)
 
-                # Add an identifier for the file and folder
-                points_data['file'] = filename
-                points_data['folder'] = current_folder
+                # Create a dictionary for the file and folder with the points list
+                file_data = {
+                    'File': filename,
+                    'Folder': current_folder,
+                    'Points': points
+                }
 
-                # Append the points data from this file to the accumulated DataFrame
-                all_points_data = all_points_data._append(points_data, ignore_index=True)
+                # Append the file data to the list
+                all_points_data.append(file_data)
 
-# Now all_points_data contains points from all .pts files in the targeted folders
-print(all_points_data)
+# Convert the list of dictionaries to a DataFrame
+df_points = pd.DataFrame(all_points_data)
 
-# Write the DataFrame to a CSV file
-all_points_data.to_csv('all_points_data.csv', index=False)
-
+#print("df_points::", df_points['Points'])
 
 # features' positioning
 features = [
@@ -66,7 +61,17 @@ features = [
 
 # Euclidean distance between two points in the dataframe
 def euclidean_distance(df, idx1, idx2):
-    point1 = df.iloc[idx1-1]
-    point2 = df.iloc[idx2-1]
-    return np.sqrt((point2['x'] - point1['x']) ** 2 + (point2['y'] - point1['y']) ** 2)
+    point1 = df[idx1]
+    point2 = df[idx2]
+    return np.sqrt((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2)
 
+
+for df_point in df_points['Points']:
+    print("Euclidian dictance: ", euclidean_distance(df_point, 8, 13))
+
+
+
+# Output the complete DataFrame to a CSV file
+# Note: Storing lists of tuples in CSV may require using a string format
+df_points.to_csv('all_points_data.csv', index=False)
+print("Data extraction complete. CSV file created.")
