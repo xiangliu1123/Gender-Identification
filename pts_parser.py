@@ -59,15 +59,33 @@ features = [
 ]
 
 
-# Euclidean distance between two points in the dataframe
+# 1. Euclidean distance between two points in the dataframe
 def euclidean_distance(df, idx1, idx2):
     point1 = df[idx1]
     point2 = df[idx2]
     return np.sqrt((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2)
 
+# 1. Eye length ratio
+
+
+# 3. get nose ratio, distance between points  15 and 16 over distance between 20 and 21
+def nose_ratio(df):
+    #print("Using point indexes:", features[2][1][0], " and ", features[2][1][1])
+    #print("Using point indexes:", features[2][1][2], " and ", features[2][1][3])
+    dist_1 = euclidean_distance(df, features[2][1][0], features[2][1][1])
+    dist_2 = euclidean_distance(df, features[2][1][2], features[2][1][3])
+    return dist_1 / dist_2
+
+eye_distances = []
+nose_ratios = []
 
 for df_point in df_points['Points']:
-    print("Euclidian dictance: ", euclidean_distance(df_point, 8, 13))
+    eye_distances.append(euclidean_distance(df_point, 8, 13))
+    nose_ratios.append(nose_ratio(df_point))
+
+print("1. Eye length ratio: ...") # print data for eye length ratio
+print("2. Eye distance ratio: ...") # print data for eye distance ratio
+print("3. Nose ratios: ", nose_ratios)
 
 
 
