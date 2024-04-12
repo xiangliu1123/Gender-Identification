@@ -96,12 +96,17 @@ def eye_brow_length(df):
     else:
         return  dist_2 / dist_3
 
+# 7. Aggressive ratio
+def aggressive_ratio(df):
+    return get_ratio(df, 6)
+
 
 eye_distances = []
 nose_ratios = []
 lip_size_ratios = []
 lip_length_ratios = []
 eye_brow_lengths = []
+aggressive_ratios = []
 
 for df_point in df_points['Points']:
     eye_distances.append(euclidean_distance(df_point, 8, 13))
@@ -109,6 +114,7 @@ for df_point in df_points['Points']:
     lip_size_ratios.append(lip_size_ratio(df_point))
     lip_length_ratios.append(lip_length_ratio(df_point))
     eye_brow_lengths.append(eye_brow_length(df_point))
+    aggressive_ratios.append(aggressive_ratio(df_point))
 
 
 print("1. Eye length ratio: ...") # print data for eye length ratio
@@ -117,7 +123,7 @@ print("3. Nose ratios: ", nose_ratios)
 print("4. Lip size ratios", lip_size_ratios)
 print("5. Lip length ratios", lip_length_ratios)
 print("6. Eye-brow length", eye_brow_lengths)
-
+print("7. Aggressive ratio", aggressive_ratios)
 
 
 
