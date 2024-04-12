@@ -68,24 +68,56 @@ def euclidean_distance(df, idx1, idx2):
 # 1. Eye length ratio
 
 
+def get_ratio(df, feature_num):
+    dist_1 = euclidean_distance(df, features[feature_num][1][0], features[feature_num][1][1])
+    dist_2 = euclidean_distance(df, features[feature_num][1][2], features[feature_num][1][3])
+    return dist_1 / dist_2
+
 # 3. get nose ratio, distance between points  15 and 16 over distance between 20 and 21
 def nose_ratio(df):
-    #print("Using point indexes:", features[2][1][0], " and ", features[2][1][1])
-    #print("Using point indexes:", features[2][1][2], " and ", features[2][1][3])
-    dist_1 = euclidean_distance(df, features[2][1][0], features[2][1][1])
-    dist_2 = euclidean_distance(df, features[2][1][2], features[2][1][3])
-    return dist_1 / dist_2
+    return get_ratio(df, 2)
+
+# 4. Lip size ratio
+def lip_size_ratio(df):
+    return get_ratio(df, 3)
+
+# 5. Lip length ratio
+def lip_length_ratio(df):
+    return get_ratio(df, 4)
+
+
+# 6. Eye-brow length
+def eye_brow_length(df):
+    dist_1 = euclidean_distance(df, features[5][1][0], features[5][1][1])
+    dist_2 = euclidean_distance(df, features[5][1][2], features[5][1][3])
+    dist_3 = euclidean_distance(df, features[5][1][2], features[5][1][3])
+    if dist_1 > dist_2:
+        return dist_1 / dist_3
+    else:
+        return  dist_2 / dist_3
+
 
 eye_distances = []
 nose_ratios = []
+lip_size_ratios = []
+lip_length_ratios = []
+eye_brow_lengths = []
 
 for df_point in df_points['Points']:
     eye_distances.append(euclidean_distance(df_point, 8, 13))
     nose_ratios.append(nose_ratio(df_point))
+    lip_size_ratios.append(lip_size_ratio(df_point))
+    lip_length_ratios.append(lip_length_ratio(df_point))
+    eye_brow_lengths.append(eye_brow_length(df_point))
+
 
 print("1. Eye length ratio: ...") # print data for eye length ratio
 print("2. Eye distance ratio: ...") # print data for eye distance ratio
 print("3. Nose ratios: ", nose_ratios)
+print("4. Lip size ratios", lip_size_ratios)
+print("5. Lip length ratios", lip_length_ratios)
+print("6. Eye-brow length", eye_brow_lengths)
+
 
 
 
