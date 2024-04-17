@@ -2,7 +2,7 @@ import ast
 import pandas as pd
 
 # Load the dataset to examine its structure
-file_path = '../facial_features.csv'
+file_path = 'facial_features.csv'
 data = pd.read_csv(file_path)
 
 # Convert the string representation of dictionaries in the 'Features' column to actual dictionaries

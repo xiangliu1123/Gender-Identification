@@ -49,7 +49,7 @@ def aggressive_ratio(points):
     return dist_10_19 / dist_20_21
 
 # Load the CSV file
-file_path = '../all_points_data.csv'
+file_path = 'all_points_data.csv'
 data = pd.read_csv(file_path)
 
 # Apply the functions to the first row as an example

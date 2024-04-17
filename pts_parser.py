@@ -2,6 +2,30 @@ import pandas as pd
 import numpy as np
 import os
 import ast
+import zipfile
+
+
+def extract_and_list_zip_contents(zip_file_path, extraction_directory):
+    try:
+        # Create a directory for extraction if it does not exist
+        if not os.path.exists(extraction_directory):
+            os.makedirs(extraction_directory)
+
+        # Extract the ZIP file
+        with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+            # # List contents of the ZIP file
+            # zip_contents = zip_ref.namelist()
+            # print("Contents of the ZIP file:")
+            # for item in zip_contents:
+            #     print(item)
+            zip_ref.extractall(extraction_directory)
+            print(f"Successfully extracted the ZIP file to '{extraction_directory}'.")
+
+    except zipfile.BadZipFile:
+        print("Error: The file is not a zip file or it is corrupted.")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 def read_pts(file_path):
@@ -15,6 +39,47 @@ def read_pts(file_path):
     # Extract points and convert to list of tuples
     points = [tuple(map(float, line.strip().split())) for line in lines[start:end]]
     return points
+
+
+def collect_points_data(directory_path, csv_directory_path):
+    # Define target folders
+    male_folders = [f'm-{i:03d}' for i in range(1, 77)]
+    female_folders = [f'w-{i:03d}' for i in range(1, 61)]
+    target_folders = male_folders + female_folders
+
+    # Initialize an empty list to accumulate all points data
+    all_points_data = []
+
+    # Iterate through the directory
+    for root, dirs, files in os.walk(directory_path):
+        current_folder = os.path.basename(root)
+        if current_folder in target_folders:
+            for filename in files:
+                if filename.endswith('.pts'):
+                    file_path = os.path.join(root, filename)
+                    points = read_pts(file_path)
+
+                    # Create a dictionary for the file and folder with the point list
+                    file_data = {
+                        'File': filename,
+                        'Folder': current_folder,
+                        'Points': points
+                    }
+
+                    # Append the file data to the list
+                    all_points_data.append(file_data)
+
+    # Convert the list of dictionaries to a DataFrame
+    df_points = pd.DataFrame(all_points_data)
+
+    # Save the DataFrame to CSV
+    if not os.path.exists(csv_directory_path):
+        os.makedirs(csv_directory_path)
+
+    csv_path = os.path.join(csv_directory_path, 'all_points_data.csv')
+    df_points.to_csv(csv_path, index=False)
+    print(f"Data exported to CSV at: {csv_path}")
+    return df_points
 
 
 def euclidean_distance(point1, point2):
@@ -50,63 +115,31 @@ def calculate_features(faceMarkUpPoints):
 
 
 def main():
-    directory_path = 'Unused code and file/points_22'
-
-    # Adjust the folder names to match the actual range provided
-    male_folders = [f'm-{i:03d}' for i in range(1, 77)]
-    female_folders = [f'w-{i:03d}' for i in range(1, 61)]
-    target_folders = male_folders + female_folders
-
-    # Initialize an empty list to accumulate all points data
-    all_points_data = []
-
-    for root, dirs, files in os.walk(directory_path):
-        current_folder = os.path.basename(root)
-        if current_folder in target_folders:
-            for filename in files:
-                if filename.endswith('.pts'):
-                    file_path = os.path.join(root, filename)
-                    points = read_pts(file_path)
-
-                    # Create a dictionary for the file and folder with the points list
-                    file_data = {
-                        'File': filename,
-                        'Folder': current_folder,
-                        'Points': points
-                    }
-
-                    # Append the file data to the list
-                    all_points_data.append(file_data)
-
-    # Convert the list of dictionaries to a DataFrame
-    df_points = pd.DataFrame(all_points_data)
+    extract_and_list_zip_contents("project_material\\Face Markup AR Database.zip", "zip_content")
+    point_df = collect_points_data("zip_content\\Face Markup AR Database\\points_22", "all_csv")
 
     # Apply feature calculation for each row
-    df_points['Features'] = df_points['Points'].apply(calculate_features)
+    feature_df = pd.DataFrame()
+    feature_df["File"] = point_df["File"]
+    feature_df['Features'] = point_df['Points'].apply(calculate_features)
 
-    # Example output
-    print(df_points.head())
-
-    # Save to CSV
-    df_points.to_csv('facial_features.csv', index=False)
-    print("Feature extraction and CSV generation complete.")
+    csv_path = os.path.join("all_csv", 'feature_data.csv')
+    feature_df.to_csv(csv_path, index=False)
+    print(f"Data exported to CSV at: {csv_path}")
 
     # Load the dataset to examine its structure
-    file_path = 'facial_features.csv'
-    data = pd.read_csv(file_path)
+    file_path = 'all_csv\\feature_data.csv'
+    feature_data = pd.read_csv(file_path)
 
     # Convert the string representation of dictionaries in the 'Features' column to actual dictionaries
-    data['Features'] = data['Features'].apply(ast.literal_eval)
+    feature_data['Features'] = feature_data['Features'].apply(ast.literal_eval)
 
-    # Create new columns for each key in the dictionary of the 'Features' column
-    features_df = data['Features'].apply(pd.Series)
+    preProcessed_df = feature_data['Features'].apply(pd.Series)
+    preProcessed_df['Gender'] = feature_data['File'].str[0]
 
-    # Create a new column 'extra' with the first letter of each row from the 'File' column
-    features_df['Gender'] = data['File'].str[0]
-
-    # Output the complete DataFrame to a CSV file
-    # Note: Storing lists of tuples in CSV may require using a string format
-    features_df.to_csv('processed_data.csv', index=False)
+    csv_path = os.path.join("all_csv", 'preProcess_df.csv')
+    preProcessed_df.to_csv(csv_path, index=False)
+    print(f"Data exported to CSV at: {csv_path}")
 
 
 if __name__ == "__main__":
