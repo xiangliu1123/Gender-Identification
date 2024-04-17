@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-directory_path = '../points_22'
+directory_path = 'points_22'
 
 # Adjust the folder names to match the actual range provided
 male_folders = [f'm-{i:03d}' for i in range(1, 77)]
