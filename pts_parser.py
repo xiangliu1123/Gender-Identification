@@ -103,13 +103,22 @@ def calculate_features(faceMarkUpPoints):
 
     dist_10_19 = euclidean_distance(faceMarkUpPoints[10], faceMarkUpPoints[19])
 
-    features = {'Eye length ratio': max(eye_length_left, eye_length_right) / upper_face_dist_horizontal,
+    nose_to_chin_dist = euclidean_distance(faceMarkUpPoints[14], faceMarkUpPoints[19])
+
+    left_cheek_to_chin_dist = euclidean_distance(faceMarkUpPoints[20], faceMarkUpPoints[19])
+    right_cheek_to_chin_dist = euclidean_distance(faceMarkUpPoints[21], faceMarkUpPoints[19])
+
+    features = {
+                'Eye length ratio': max(eye_length_left, eye_length_right) / upper_face_dist_horizontal,
                 'Eye distance ratio': eye_dist / upper_face_dist_horizontal,
                 'Nose ratio': nose_dist / lower_face_dist_horizontal,
                 'Lip size ratio': lip_dist_horizontal / lip_dist_vertical,
                 'Lip length ratio': lip_dist_horizontal / lower_face_dist_horizontal,
                 'Eye-brow length ratio': max(eyebrow_length_left, eyebrow_length_right) / upper_face_dist_horizontal,
-                'Aggressive ratio': dist_10_19 / lower_face_dist_horizontal}
+                'Aggressive ratio left': dist_10_19 / lower_face_dist_horizontal,
+                # 'Lower face ratio': nose_to_chin_dist/lower_face_dist_horizontal
+                'Jaw_line_ratio': max(left_cheek_to_chin_dist, right_cheek_to_chin_dist) / lower_face_dist_horizontal
+                }
 
     return features
 
