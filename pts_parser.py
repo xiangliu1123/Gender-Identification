@@ -108,17 +108,34 @@ def calculate_features(faceMarkUpPoints):
     left_cheek_to_chin_dist = euclidean_distance(faceMarkUpPoints[20], faceMarkUpPoints[19])
     right_cheek_to_chin_dist = euclidean_distance(faceMarkUpPoints[21], faceMarkUpPoints[19])
 
+    bottom_lip_to_chin_dist = euclidean_distance(faceMarkUpPoints[18], faceMarkUpPoints[19])
+
+    nose_tip_to_upper_lips = euclidean_distance(faceMarkUpPoints[14], faceMarkUpPoints[17])
+    lower_lips_to_chin = euclidean_distance(faceMarkUpPoints[18], faceMarkUpPoints[19])
+
+    end_of_eye_brow_to_end_eye_left = euclidean_distance(faceMarkUpPoints[7], faceMarkUpPoints[12])
+    end_of_eye_brow_to_end_eye_right = euclidean_distance(faceMarkUpPoints[4], faceMarkUpPoints[9])
+
     features = {
-                'Eye length ratio': max(eye_length_left, eye_length_right) / upper_face_dist_horizontal,
-                'Eye distance ratio': eye_dist / upper_face_dist_horizontal,
-                'Nose ratio': nose_dist / lower_face_dist_horizontal,
-                'Lip size ratio': lip_dist_horizontal / lip_dist_vertical,
-                'Lip length ratio': lip_dist_horizontal / lower_face_dist_horizontal,
-                'Eye-brow length ratio': max(eyebrow_length_left, eyebrow_length_right) / upper_face_dist_horizontal,
-                'Aggressive ratio left': dist_10_19 / lower_face_dist_horizontal,
-                # 'Lower face ratio': nose_to_chin_dist/lower_face_dist_horizontal
-                'Jaw_line_ratio': max(left_cheek_to_chin_dist, right_cheek_to_chin_dist) / lower_face_dist_horizontal
-                }
+        'Eye length ratio': max(eye_length_left, eye_length_right) / upper_face_dist_horizontal,
+        'Eye distance ratio': eye_dist / upper_face_dist_horizontal,
+        'Nose ratio': nose_dist / lower_face_dist_horizontal,
+        'Lip size ratio': lip_dist_horizontal / lip_dist_vertical,
+        'Lip length ratio': lip_dist_horizontal / lower_face_dist_horizontal,
+        'Eye-brow length ratio': max(eyebrow_length_left, eyebrow_length_right) / upper_face_dist_horizontal,
+        'Aggressive ratio left': dist_10_19 / lower_face_dist_horizontal,
+        # 'Lower face ratio': nose_to_chin_dist/lower_face_dist_horizontal
+        'Jaw line ratio': max(left_cheek_to_chin_dist, right_cheek_to_chin_dist) / lower_face_dist_horizontal,
+        # 'Nose to mouse': nose_dist / lip_dist_horizontal
+        # 'Jaw length ratio': bottom_lip_to_chin_dist / lower_face_dist_horizontal
+        'Nose upper to lips ': nose_tip_to_upper_lips,
+        'Lower lips to chin ratio': lower_lips_to_chin,
+        # 'end_of_eye_brow_to_end_eye_left': end_of_eye_brow_to_end_eye_left,
+        # 'end_of_eye_brow_to_end_eye_right': end_of_eye_brow_to_end_eye_right,
+        # 'Brow to eye ratio': end_of_eye_brow_to_end_eye_right/end_of_eye_brow_to_end_eye_left,
+        'Nose to chin': nose_to_chin_dist,
+
+    }
 
     return features
 
