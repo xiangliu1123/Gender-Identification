@@ -117,19 +117,22 @@ def calculate_features(faceMarkUpPoints):
     end_of_eye_brow_to_end_eye_right = euclidean_distance(faceMarkUpPoints[4], faceMarkUpPoints[9])
 
     features = {
-        'Eye length ratio': max(eye_length_left, eye_length_right) / upper_face_dist_horizontal,
-        'Eye distance ratio': eye_dist / upper_face_dist_horizontal,
-        'Nose ratio': nose_dist / lower_face_dist_horizontal,
-        'Lip size ratio': lip_dist_horizontal / lip_dist_vertical,
-        'Lip length ratio': lip_dist_horizontal / lower_face_dist_horizontal,
-        'Eye-brow length ratio': max(eyebrow_length_left, eyebrow_length_right) / upper_face_dist_horizontal,
-        'Aggressive ratio left': dist_10_19 / lower_face_dist_horizontal,
-        # 'Lower face ratio': nose_to_chin_dist/lower_face_dist_horizontal
+        'Eye length ratio': max(eye_length_left, eye_length_right) / upper_face_dist_horizontal,  # 1
+        'Eye distance ratio': eye_dist / upper_face_dist_horizontal,  # 2
+        'Nose ratio': nose_dist / lower_face_dist_horizontal,  #3
+        'Lip size ratio': lip_dist_horizontal / lip_dist_vertical,  #4
+        'Lip length ratio': lip_dist_horizontal / lower_face_dist_horizontal,  #5
+        'Eye-brow length ratio': max(eyebrow_length_left, eyebrow_length_right) / upper_face_dist_horizontal,  #6
+        'Aggressive ratio left': dist_10_19 / lower_face_dist_horizontal,  #7
+
+        # Extra
         'Jaw line ratio': max(left_cheek_to_chin_dist, right_cheek_to_chin_dist) / lower_face_dist_horizontal,
-        # 'Nose to mouse': nose_dist / lip_dist_horizontal
-        # 'Jaw length ratio': bottom_lip_to_chin_dist / lower_face_dist_horizontal
         'Nose upper to lips ': nose_tip_to_upper_lips,
         'Lower lips to chin ratio': lower_lips_to_chin,
+
+        # 'Lower face ratio': nose_to_chin_dist/lower_face_dist_horizontal
+        # 'Nose to mouse': nose_dist / lip_dist_horizontal
+        # 'Jaw length ratio': bottom_lip_to_chin_dist / lower_face_dist_horizontal
         # 'end_of_eye_brow_to_end_eye_left': end_of_eye_brow_to_end_eye_left,
         # 'end_of_eye_brow_to_end_eye_right': end_of_eye_brow_to_end_eye_right,
         # 'Brow to eye ratio': end_of_eye_brow_to_end_eye_right/end_of_eye_brow_to_end_eye_left,
