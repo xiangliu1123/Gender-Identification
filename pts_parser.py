@@ -133,7 +133,7 @@ def calculate_features(faceMarkUpPoints):
         # 'end_of_eye_brow_to_end_eye_left': end_of_eye_brow_to_end_eye_left,
         # 'end_of_eye_brow_to_end_eye_right': end_of_eye_brow_to_end_eye_right,
         # 'Brow to eye ratio': end_of_eye_brow_to_end_eye_right/end_of_eye_brow_to_end_eye_left,
-        'Nose to chin': nose_to_chin_dist,
+        # 'Nose to chin': nose_to_chin_dist,
 
     }
 
