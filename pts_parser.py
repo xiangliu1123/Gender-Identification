@@ -124,11 +124,13 @@ def calculate_features(faceMarkUpPoints):
         'Aggressive ratio left': dist_10_19 / lower_face_dist_horizontal,  #7
 
         # Extra
-        'Jaw line ratio': max(left_cheek_to_chin_dist, right_cheek_to_chin_dist) / lower_face_dist_horizontal,
-        'Jaw horizontal length ratio': lower_lips_to_chin / lower_face_dist_horizontal,
+        'Jaw line ratio': nose_tip_to_chin_dist/ lower_face_dist_horizontal,
+        'Jaw horizontal length ratio': lip_dist_horizontal / lower_face_dist_horizontal,
         'Nose tip to lips distance': nose_tip_to_upper_lips,
         'Lower lips to chin distance': lower_lips_to_chin,
         'Nose tip to chin': nose_tip_to_chin_dist,
+        'Lip horizontal ratio': lip_dist_horizontal/nose_tip_to_chin_dist,
+
 
         # Unused
         # 'end_of_eye_brow_to_end_eye_left': end_of_eye_brow_to_end_eye_left,
