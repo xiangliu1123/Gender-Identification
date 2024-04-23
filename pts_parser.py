@@ -103,12 +103,10 @@ def calculate_features(faceMarkUpPoints):
 
     dist_10_19 = euclidean_distance(faceMarkUpPoints[10], faceMarkUpPoints[19])
 
-    nose_to_chin_dist = euclidean_distance(faceMarkUpPoints[14], faceMarkUpPoints[19])
+    nose_tip_to_chin_dist = euclidean_distance(faceMarkUpPoints[14], faceMarkUpPoints[19])
 
     left_cheek_to_chin_dist = euclidean_distance(faceMarkUpPoints[20], faceMarkUpPoints[19])
     right_cheek_to_chin_dist = euclidean_distance(faceMarkUpPoints[21], faceMarkUpPoints[19])
-
-    bottom_lip_to_chin_dist = euclidean_distance(faceMarkUpPoints[18], faceMarkUpPoints[19])
 
     nose_tip_to_upper_lips = euclidean_distance(faceMarkUpPoints[14], faceMarkUpPoints[17])
     lower_lips_to_chin = euclidean_distance(faceMarkUpPoints[18], faceMarkUpPoints[19])
@@ -127,17 +125,17 @@ def calculate_features(faceMarkUpPoints):
 
         # Extra
         'Jaw line ratio': max(left_cheek_to_chin_dist, right_cheek_to_chin_dist) / lower_face_dist_horizontal,
-        'Nose upper to lips ': nose_tip_to_upper_lips,
-        'Lower lips to chin ratio': lower_lips_to_chin,
+        'Jaw horizontal length ratio': lower_lips_to_chin / lower_face_dist_horizontal,
+        'Nose tip to lips distance': nose_tip_to_upper_lips,
+        'Lower lips to chin distance': lower_lips_to_chin,
+        'Nose tip to chin': nose_tip_to_chin_dist,
 
-        # 'Lower face ratio': nose_to_chin_dist/lower_face_dist_horizontal
-        # 'Nose to mouse': nose_dist / lip_dist_horizontal
-        # 'Jaw length ratio': bottom_lip_to_chin_dist / lower_face_dist_horizontal
+        # Unused
         # 'end_of_eye_brow_to_end_eye_left': end_of_eye_brow_to_end_eye_left,
         # 'end_of_eye_brow_to_end_eye_right': end_of_eye_brow_to_end_eye_right,
         # 'Brow to eye ratio': end_of_eye_brow_to_end_eye_right/end_of_eye_brow_to_end_eye_left,
-        # 'Nose to chin': nose_to_chin_dist,
-
+        # 'Lower face ratio': nose_tip_to_chin_dist/lower_face_dist_horizontal,
+        # 'Nose to mouse': nose_dist / lip_dist_horizontal,
     }
 
     return features
