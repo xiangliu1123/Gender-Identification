@@ -144,20 +144,20 @@ def calculate_features(faceMarkUpPoints):
 
 
 def main():
-    extract_and_list_zip_contents("project_material\\Face Markup AR Database.zip", "zip_content")
-    point_df = collect_points_data("zip_content\\Face Markup AR Database\\points_22", "all_csv")
+    extract_and_list_zip_contents("..\\project_material\\Face Markup AR Database.zip", "..\\zip_content")
+    point_df = collect_points_data("..\\zip_content\\Face Markup AR Database\\points_22", "..\\all_csv")
 
     # Apply feature calculation for each row
     feature_df = pd.DataFrame()
     feature_df["File"] = point_df["File"]
     feature_df['Features'] = point_df['Points'].apply(calculate_features)
 
-    csv_path = os.path.join("all_csv", 'feature_data.csv')
+    csv_path = os.path.join("../all_csv", 'feature_data.csv')
     feature_df.to_csv(csv_path, index=False)
     print(f"Data exported to CSV at: {csv_path}")
 
     # Load the dataset to examine its structure
-    file_path = 'all_csv\\feature_data.csv'
+    file_path = '..\\all_csv\\feature_data.csv'
     feature_data = pd.read_csv(file_path)
 
     # Convert the string representation of dictionaries in the 'Features' column to actual dictionaries
@@ -166,7 +166,7 @@ def main():
     preProcessed_df = feature_data['Features'].apply(pd.Series)
     preProcessed_df['Gender'] = feature_data['File'].str[0]
 
-    csv_path = os.path.join("all_csv", 'preProcess_df.csv')
+    csv_path = os.path.join("../all_csv", 'preProcess_df.csv')
     preProcessed_df.to_csv(csv_path, index=False)
     print(f"Data exported to CSV at: {csv_path}")
 

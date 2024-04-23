@@ -11,7 +11,7 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 
 # Load data
-data = pd.read_csv('all_csv\\preProcess_df.csv')
+data = pd.read_csv('..\\all_csv\\preProcess_df.csv')
 
 # Split features and target variable
 X = data.drop(columns=['Gender'])
